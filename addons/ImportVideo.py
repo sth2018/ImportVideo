@@ -24,6 +24,7 @@ def main():
     import ivideo
     # menu
     ivideo.config_menu()
+    ivideo.browser_menu()
     # remove
     remHook("profileLoaded", main)
 

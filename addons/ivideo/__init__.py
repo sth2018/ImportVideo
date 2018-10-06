@@ -19,8 +19,10 @@
 
 from aqt import mw
 from aqt.qt import *
+from anki.hooks import addHook, remHook
 from .gui import *
 from .constants import APP_ICON
+from .lang import _
 
 
 __all__ = ['config_menu']
@@ -30,6 +32,35 @@ def config_menu():
     """
     add menu to anki window menebar
     """
-    action = QAction(APP_ICON, "Import Video", mw)
+    action = QAction(APP_ICON, "Import Video...", mw)
     action.triggered.connect(lambda: show_dialog())
     mw.form.menuTools.addAction(action)
+
+
+def browser_menu():
+    """
+    add add-on's menu to browser window
+    """
+    def on_setup_menus(browser):
+        """
+        on browser setupMenus was called
+        """
+        # main menu
+        menu = browser.form.menubar.addMenu("Import Video")
+
+        # import
+        action = QAction(APP_ICON, _("IMPORT_VIDEO"), mw)
+        action.triggered.connect(lambda: show_dialog())
+        menu.addAction(action)
+
+        # check update
+        action = QAction(_('CHECK_UPDATE'), browser)
+        action.triggered.connect(lambda: check_updates(background=False, parent=browser))
+        menu.addAction(action)
+
+        # About
+        action = QAction(_('ABOUT'), browser)
+        action.triggered.connect(lambda: show_about_dialog(browser))
+        menu.addAction(action)
+
+    addHook('browser.setupMenus', on_setup_menus)

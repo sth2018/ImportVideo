@@ -29,17 +29,12 @@ __all__ = ['_', '_cl', '_sl']
 
 #Language Define, [Key, zh_CN, en]
 _arr = [
-    ['CHOOSE_NOTE_TYPES', u'选择笔记类型', u'Choose Note Type'],
-    ['CHOOSE_DECK', u'选择课件', u'Choose Deck'],
-
-    ['UPDATED', u'更新', u'Updated'],
-    ['CARDS', u'卡片', u'Cards'],
     ['FAILURE', u'失败', u'Failure'],
     ['SUCCESS', u'成功', u'Success'],
     ['FIELDS', u'字段', u'Fields'],
     ['IGNORE', u'忽略', u'Ignore'],
-    ['NOTE_TYPE_FIELDS', u'<b>笔记字段</b>', u'<b>Note Fields</b>'],
     ['ABOUT', u'关于', u'About'],
+    ['IMPORT_VIDEO', u'视频导入...', u'Import Video...'],
     ['REPOSITORY', u'项目地址', u'Project Repo'],
     ['FEEDBACK', u'反馈', u'Feedback'],
     ['VERSION', u'版本', u'Current Version'],
@@ -52,9 +47,9 @@ _arr = [
     ['CHECK_UPDATE', u'检测更新', u'Check Update'],
     ['SELECT_ALL', u'全选', u'All'],
 
-    ['VIDEO', u'视频 ...', u'Video ...'],
-    ['SUB01', u'字幕1 ...', u'Subtitles 01 ...'],
-    ['SUB02', u'字幕2 ...', u'Subtitles 02 ...'],
+    ['VIDEO', u'视频...', u'Video...'],
+    ['SUB01', u'字幕1...', u'Subtitles 01...'],
+    ['SUB02', u'字幕2...', u'Subtitles 02...'],
 
     ['FLD_TIMESTAMP', u'时间戳', u'Timestamp'],
     ['FLD_IMAGE', u'截图', u'Image'],
