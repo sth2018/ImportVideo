@@ -20,6 +20,7 @@
 from aqt import mw
 from aqt.qt import *
 from .gui import *
+from .constants import APP_ICON
 
 
 __all__ = ['config_menu']
@@ -29,6 +30,6 @@ def config_menu():
     """
     add menu to anki window menebar
     """
-    action = QAction("Import Video", mw)
+    action = QAction(APP_ICON, "Import Video", mw)
     action.triggered.connect(lambda: show_dialog())
     mw.form.menuTools.addAction(action)

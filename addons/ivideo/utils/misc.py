@@ -25,6 +25,8 @@ import shutil
 import time
 import subprocess
 
+from aqt.qt import QIcon
+
 
 __all__ = ['subprocess_args', 'srt_time_to_seconds', 'tsv_time_to_seconds',
             'get_time_parts', 'seconds_to_srt_time', 'seconds_to_tsv_time',
@@ -33,7 +35,7 @@ __all__ = ['subprocess_args', 'srt_time_to_seconds', 'tsv_time_to_seconds',
             'remove_tags', 'sync_subtitles', 'change_subtitles_ending_time',
             'find_glob_files', 'guess_srt_file', 'format_filename',
             'get_ffmpeg_split_timestamps', 'get_model_byId',
-            'clear_layout', 'rmfile']
+            'clear_layout', 'rmfile', 'get_icon']
 
 
 
@@ -331,3 +333,9 @@ def rmfile(f):
     except os.error, err:
         print err
         return False
+
+def get_icon(filename):
+    curdir = os.path.dirname(os.path.abspath(__file__))
+    pardir = os.path.join(curdir, os.pardir)
+    path = os.path.join(pardir, 'res', filename)
+    return QIcon(path)

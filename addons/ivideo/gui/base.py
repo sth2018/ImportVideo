@@ -21,6 +21,7 @@
 import sys
 from anki.utils import isMac
 from aqt.qt import *
+from ..constants import APP_ICON
 
 
 __all__ = ['Dialog']
@@ -46,10 +47,10 @@ class Dialog(QDialog):
             self.windowFlags() &
             ~Qt.WindowContextHelpButtonHint
         )
-        #self.setWindowIcon(APP_ICON)
+        self.setWindowIcon(APP_ICON)
         self.setWindowTitle(
-            title if "IVideo" in title
-            else "IVideo - " + title
+            title if "Import Video" in title
+            else "Import Video - " + title
         )
         # 2 & 3 & mac compatible
         if isMac and sys.hexversion >= 0x03000000:

@@ -2,7 +2,7 @@
 #
 # Copyright (C) 2018 sthoo <sth201807@gmail.com>
 #
-# Support: Report an issue at https://github.com/sth2018/FastWordQuery/issues
+# Support: Report an issue at https://github.com/sth2018/ImportVideo/issues
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -19,11 +19,13 @@
 
 
 from .lang import _
+from .utils import get_icon
 
 
-__all__ = ['VERSION', 'Endpoint', 'Template']
+__all__ = ['VERSION', 'APP_ICON', 'Endpoint', 'Template']
 
 VERSION = u'v0.0.1'
+APP_ICON = get_icon('icon.png')       #Addon Icon
 
 class Endpoint:
     repository = u'https://github.com/sth2018/ImportVideo'
