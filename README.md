@@ -1,6 +1,7 @@
 # Import Video Add-On for Anki
 
-  Add new cards from a video with subtitles.This add-on is an adaptation of [movies2anki](https://github.com/kelciour/movies2anki).  
+  Add new cards from a video with subtitles. This add-on is an adaptation of [movies2anki](https://github.com/kelciour/movies2anki).  
+  Only supports Anki 2.1.x.
 
 ## Install
   
