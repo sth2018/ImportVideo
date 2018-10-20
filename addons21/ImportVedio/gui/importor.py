@@ -54,6 +54,16 @@ from ..lang import _
 __all__ = ['Importor']
 
 
+# Use `bytes` for byte strings and `unicode` for unicode strings (str in Py3).
+if sys.version_info[0] <= 2:
+    try:
+        bytes
+    except NameError:
+        bytes = str
+elif sys.version_info[0] >= 3:
+    unicode = str
+
+
 class Importor(Dialog):
     
     def __init__(self, parent, title=u'Import'):
@@ -81,7 +91,6 @@ class Importor(Dialog):
         self.previewButton.clicked.connect(self.preview)
         self.startButton.clicked.connect(self.start)
         self.aboutButton.clicked.connect(self.about)
-        self.checkUpdate.clicked.connect(self.checkUpdates)
         # changes
         self.widthSpinBox.valueChanged.connect(self.setVideoWidth)
         self.heightSpinBox.valueChanged.connect(self.setVideoHeight)
@@ -106,18 +115,41 @@ class Importor(Dialog):
         super(Importor, self).closeEvent(event)
 
     def showVideoFileDialog(self):
-        fname = unicode(QFileDialog.getOpenFileName(directory = CONFIG.directory, filter = "Video Files (*.avi *.mkv *.mp4 *.ts);;All files (*.*)"))
-        self.videoEdit.setText(os.path.realpath(fname))
+        #fname = unicode(QFileDialog.getOpenFileName(directory = CONFIG.directory, filter = "Video Files (*.avi *.mkv *.mp4 *.ts);;All files (*.*)"))
+        ret = QFileDialog.getOpenFileName(
+            self,
+            caption = u"Select Video File", 
+            directory = CONFIG.directory,
+            filter = "Video Files (*.avi *.mkv *.mp4 *.ts);;All files (*.*)"
+        )
+        if ret:
+            fname = unicode(ret[0])
+            self.videoEdit.setText(os.path.realpath(fname))
+            CONFIG.directory = os.path.dirname(fname)
 
     def showSubsEnFileDialog(self):
-        fname = unicode(QFileDialog.getOpenFileName(directory = CONFIG.directory, filter = "Subtitle Files (*.srt)"))
-        self.subsEngEdit.setText(os.path.realpath(fname))
-        CONFIG.directory = os.path.dirname(fname)
+        ret = QFileDialog.getOpenFileName(
+            self,
+            caption = u"Select Subtitles", 
+            directory = CONFIG.directory, 
+            filter = "Subtitle Files (*.srt)"
+        )
+        if ret:
+            fname = unicode(ret[0])
+            self.subsEngEdit.setText(os.path.realpath(fname))
+            CONFIG.directory = os.path.dirname(fname)
 
     def showSubsCnFileDialog(self):
-        fname = unicode(QFileDialog.getOpenFileName(directory = CONFIG.directory, filter = "Subtitle Files (*.srt)"))
-        self.subsRusEdit.setText(os.path.realpath(fname))
-        CONFIG.directory = os.path.dirname(fname)
+        ret = QFileDialog.getOpenFileName(
+            self,
+            caption = u"Select Subtitles", 
+            directory = CONFIG.directory, 
+            filter = "Subtitle Files (*.srt)"
+        )
+        if ret:
+            fname = unicode(ret[0])
+            self.subsRusEdit.setText(os.path.realpath(fname))
+            CONFIG.directory = os.path.dirname(fname)
     
     def onModelChange(self):
         self.model.model = mw.col.models.current()
@@ -151,7 +183,7 @@ class Importor(Dialog):
     def getAudioStreams(self, video_file):
         self.audio_streams = []
         if not os.path.isfile(video_file):
-            print "Video file not found"
+            print("Video file not found")
             return
 
         try:
@@ -163,12 +195,13 @@ class Importor(Dialog):
                 "-show_format", 
                 "-show_streams", 
                 "-select_streams", 
-                "a", video_file.encode(sys.getfilesystemencoding())], 
+                "a", 
+                video_file], 
                 **subprocess_args(False)
             )
         except OSError as ex:
             self.model.audio_id = 0
-            print "Can't find ffprobe", ex
+            print("Can't find ffprobe", ex)
             return
 
         json_data = json.loads(output)
@@ -177,9 +210,9 @@ class Importor(Dialog):
         for idx,audio in enumerate(streams):
             title = ""
             language = "???"
-            if audio.has_key("tags"):
+            if "tags" in audio:
                 tags = audio["tags"]
-                if tags.has_key("language"):
+                if "language" in tags:
                     language = tags["language"]
             if len(title) != 0:
                 stream = "%i: %s [%s]" % (idx, title, language)
@@ -228,10 +261,6 @@ class Importor(Dialog):
     def about(self):
         from .common import show_about_dialog
         show_about_dialog(self)
-    
-    def checkUpdates(self):
-        from .common import check_updates
-        check_updates(parent=self)
 
     def validateSubtitles(self):
         if len(self.model.en_srt) == 0:
@@ -239,12 +268,12 @@ class Importor(Dialog):
             return False
 
         if not os.path.isfile(self.model.en_srt):
-            print "Subtitles 01 didn't exist."
+            print("Subtitles 01 didn't exist.")
             return False
 
         if len(self.model.cn_srt) != 0:
             if not os.path.isfile(self.model.cn_srt):
-                print "Subtitles 02 didn't exist."
+                print("Subtitles 02 didn't exist.")
                 return False
 
         return True
@@ -309,7 +338,7 @@ class Importor(Dialog):
         try:
             call(["ffmpeg", "-version"], **subprocess_args())
         except OSError as ex: 
-            print "Can't find ffmpeg", ex
+            print("Can't find ffmpeg", ex)
             self.showErrorDialog("Can't find ffmpeg.")
             return
         
@@ -493,16 +522,7 @@ class Importor(Dialog):
 
         hbox = QHBoxLayout()
         hbox.addWidget(groupBox)
-
-        vbox = QVBoxLayout()
-        self.checkUpdate = QPushButton(_('CHECK_UPDATE'))
-        self.aboutButton = QPushButton(_('ABOUT'))
-        vbox.addStretch(1)
-        vbox.addWidget(self.checkUpdate)
-        vbox.addWidget(self.aboutButton)
-        vbox.addStretch(1)
-        hbox.addLayout(vbox)
-
+        
         return hbox
 
     def createBottomGroup(self):
@@ -513,7 +533,7 @@ class Importor(Dialog):
         self.deckComboBox.setMaxCount(5)
         self.deckComboBox.setSizePolicy(
             QSizePolicy.Expanding,
-            QSizePolicy.Preferred
+            QSizePolicy.Fixed
         )
         self.deckComboBox.addItems(CONFIG.recent_deck_names)
         self.deckComboBox.clearEditText()
@@ -527,8 +547,10 @@ class Importor(Dialog):
         hbox.addWidget(groupBox)
 
         vbox = QVBoxLayout()
+        self.aboutButton = QPushButton(_('ABOUT'))
         self.previewButton = QPushButton("Preview...")
         self.startButton = QPushButton("Go!")
+        vbox.addWidget(self.aboutButton)
         vbox.addWidget(self.previewButton)
         vbox.addWidget(self.startButton)
         hbox.addLayout(vbox)

@@ -59,8 +59,8 @@ class Config(object):
         if isinstance(values, deque):
             self.data['recent_deck_names'] = list(values)
         self.data.update(data)
-        with open(path, 'wb') as f:
-            json.dump(self.data, f, indent=4, sort_keys=True)
+        with open(path, 'w', encoding='utf-8') as f:
+            json.dump(self.data, f, indent=4, sort_keys=True, ensure_ascii=False)
             f.close()
 
     def save(self):

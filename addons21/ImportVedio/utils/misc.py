@@ -164,11 +164,11 @@ def read_subtitles(content, is_ignore_SDH):
                     if is_not_sdh_subtitle(sub_content):
                         en_subs.append((sub_start, sub_end, sub_content))
                     else:
-                        print "Ignore subtitle: %s" % repr(sub_content)
+                        print("Ignore subtitle: %s" % repr(sub_content))
             else:
-                print "Empty subtitle: %s" % repr(sub)
+                print("Empty subtitle: %s" % repr(sub))
         else:
-            print "Ignore subtitle: %s" % repr(sub)
+            print("Ignore subtitle: %s" % repr(sub))
    
     return en_subs
 
@@ -330,8 +330,8 @@ def rmfile(f):
         if os.path.exists(f):
             os.remove(os.path.realpath(f))
         return True
-    except os.error, err:
-        print err
+    except os.error as err:
+        print(err)
         return False
 
 def get_icon(filename):

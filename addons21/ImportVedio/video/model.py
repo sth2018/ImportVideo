@@ -18,11 +18,20 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 
+import sys
 import json
 import os
 from ..utils.misc import *
 from ..config import CONFIG
 
+# Use `bytes` for byte strings and `unicode` for unicode strings (str in Py3).
+if sys.version_info[0] <= 2:
+    try:
+        bytes
+    except NameError:
+        bytes = str
+elif sys.version_info[0] >= 3:
+    unicode = str
 
 __all__ = ['Model', 'FLD_NAMES']
 
@@ -68,12 +77,13 @@ class Model(object):
         if len(filename) == 0:
             return []
 
-        file_content = open(filename, 'rU').read()
+        file_content = open(filename, 'rb').read()
         if file_content[:3]=='\xef\xbb\xbf': # with bom
             file_content = file_content[3:]
 
-        file_content = fix_empty_lines(file_content)
         file_content = self.convert_to_unicode(file_content)
+        file_content = file_content.replace('\r\n', '\n')
+        file_content = fix_empty_lines(file_content)
         return read_subtitles(file_content, is_ignore_SDH)
 
     def create_subtitles(self):

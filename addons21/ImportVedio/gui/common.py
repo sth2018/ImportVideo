@@ -17,15 +17,26 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-import os
-from anki.hooks import addHook, remHook
 
-def main():
-    import ivideo
-    # menu
-    ivideo.config_menu()
-    ivideo.browser_menu()
-    # remove
-    remHook("profileLoaded", main)
+from aqt import mw
+from aqt.qt import *
+from aqt.utils import showInfo
+from .importor import Importor
+from ..lang import _
+from ..constants import Endpoint, Template
 
-addHook("profileLoaded", main)
+
+__all__ = ['show_dialog', 'show_about_dialog']
+
+
+def show_dialog(browser=None):
+    parent = mw if browser is None else browser
+    win = Importor(parent)
+    win.activateWindow()
+    win.raise_()
+    win.exec_()
+
+
+def show_about_dialog(parent):
+    '''open about dialog'''
+    QMessageBox.about(parent, _('ABOUT'), Template.tmpl_about)

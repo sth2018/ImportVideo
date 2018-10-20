@@ -101,7 +101,7 @@ class VideoWorker(QThread):
                     "-ac", "2", 
                     '"' + mp4 + '"'
                 ])
-                self.model.proc = Popen(cmd.encode(sys.getfilesystemencoding()), shell=True, **subprocess_args())
+                self.model.proc = Popen(cmd, shell=True, **subprocess_args())
                 self.model.proc.wait()
 
             if self.canceled:
@@ -119,7 +119,7 @@ class VideoWorker(QThread):
                     "-r 1 -vframes 1 -an -vcodec mjpeg",
                     '"' + jpg + '"'
                 ])
-                self.model.proc = Popen(cmd.encode(sys.getfilesystemencoding()), shell=True, **subprocess_args())
+                self.model.proc = Popen(cmd, shell=True, **subprocess_args())
                 self.model.proc.wait()
 
             if self.canceled:
@@ -138,7 +138,7 @@ class VideoWorker(QThread):
                     "-map", "0:a:" + str(self.model.audio_id), 
                     '"' + mp3 + '"'
                 ])
-                self.model.proc = Popen(cmd.encode(sys.getfilesystemencoding()), shell=True, **subprocess_args())
+                self.model.proc = Popen(cmd, shell=True, **subprocess_args())
                 self.model.proc.wait()
 
             # note
