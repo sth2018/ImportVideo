@@ -12,7 +12,7 @@
   - Windows  
   1. Download [FFmpeg](https://ffmpeg.zeranoe.com/builds/)
   2. Install FFmpeg
-  2. Add ffmpeg.exe to system environment variable PATH
+  3. Add ffmpeg.exe to system environment variable PATH
     
   - Linux
   ```shell
