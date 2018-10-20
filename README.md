@@ -21,7 +21,7 @@
   ```
     
   - MacOS
-  1. Install Homebrew
+  1. Install [Homebrew](https://brew.sh/)
   2. Install FFmpeg
   ```shell
   brew install ffmpeg
