@@ -38,7 +38,7 @@ import os.path
 import anki
 import aqt
 import aqt.models
-from aqt import mw
+from aqt import mw, modelchooser
 from aqt.qt import *
 from aqt.studydeck import StudyDeck
 from anki.hooks import addHook, remHook, runHook
